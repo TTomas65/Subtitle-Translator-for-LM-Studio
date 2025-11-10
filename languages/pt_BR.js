@@ -1,30 +1,30 @@
-// Português language file
-const pt = {
+// Portuguese (Brazil) language file
+const pt_BR = {
     // Main title
     appTitle: "Tradutor de Legendas SRT",
     
     // File upload
     fileUploadTitle: "Carregar Arquivo de Legendas",
     fileInputLabel: "Escolher Arquivo",
-    browseButton: "Navegar...",
+    browseButton: "Procurar...",
     noFileSelected: "Nenhum arquivo selecionado",
     fileInfo: "linhas",
     
     // Translation temperature
-    temperatureTitle: "Temperatura de Tradução",
-    temperatureAccurate: "Preciso",
-    temperatureBalanced: "Equilibrado",
-    temperatureCreative: "Criativo",
+    temperatureTitle: "Temperatura da Tradução",
+    temperatureAccurate: "Precisa",
+    temperatureBalanced: "Equilibrada",
+    temperatureCreative: "Criativa",
     
     // Translation mode and API key
     languageTitle: "Tradução",
-    translationModeTitle: "Modo de tradução",
-    apiKeyLabel: "Chave API",
+    translationModeTitle: "Modo de Tradução",
+    apiKeyLabel: "Chave da API",
     showApiKeyButton: "Mostrar",
     sourceLanguage: "Idioma de Origem",
     targetLanguage: "Idioma de Destino",
     
-    // OpenRouter modellválasztó
+    // OpenRouter model selector
     openrouterModelLabel: "Seleção de modelo OpenRouter:",
     selectModelPlaceholder: "Selecione um modelo...",
     
@@ -56,49 +56,55 @@ const pt = {
     translationCompleted: "Tradução concluída com sucesso!",
     successLoadWorkFile: "Arquivo de trabalho carregado com sucesso! Você pode continuar a tradução.",
     successSaveWorkFile: "Arquivo de trabalho salvo com sucesso!",
+    successWorkFile: "Arquivo de trabalho salvo com sucesso!",
+    successSourceBlock: "Bloco de origem salvo com sucesso!",
     
     // Error messages
     errorFileLoad: "Erro ao carregar o arquivo",
-    errorTranslation: "Ocorreu um erro durante a tradução!",
-    errorSave: "Erro ao salvar o arquivo",
-    errorNoFile: "Por favor, selecione um arquivo!",
-    errorTranslationRunning: "Por favor, pare a tradução antes de carregar um novo arquivo!",
-    errorInvalidFile: "Apenas arquivos .srt, .wrk ou .mmm podem ser carregados!",
-    errorNoSubtitles: "O arquivo não contém legendas válidas!",
-    errorNoSrtFirst: "Por favor, carregue um arquivo .srt primeiro antes de carregar um arquivo .mmm!",
-    errorNoValidText: "O arquivo não contém textos válidos ou os números de linha não correspondem às legendas carregadas!",
-    errorNoTranslation: "Nada para salvar! Por favor, traduza as legendas primeiro.",
-    errorNoSubtitleToSave: "Nenhuma legenda carregada para salvar!",
+    errorTranslation: "Erro durante a tradução",
+    errorSaveTranslation: "Erro ao salvar a tradução",
+    errorSaveSrt: "Erro ao salvar o arquivo SRT",
+    errorSaveSourceBlock: "Erro ao salvar o bloco de origem",
+    errorLoadLanguage: "Erro ao carregar o arquivo de idioma",
+    errorNoSubtitles: "Nenhuma legenda carregada",
+    errorNoTranslation: "Nenhuma tradução disponível",
+    errorNoSourceLanguage: "Por favor, selecione o idioma de origem",
+    errorNoTargetLanguage: "Por favor, selecione o idioma de destino",
+    errorApiKey: "A chave da API é obrigatória para este modo de tradução",
     errorApiNotAvailable: "A API do LM Studio não está disponível. Verifique se o LM Studio está sendo executado em segundo plano.",
     errorRetranslation: "Ocorreu um erro durante a retradução!",
     errorLoadWorkFile: "Ocorreu um erro ao carregar o arquivo de trabalho. Verifique o formato do arquivo!",
     errorServerConnection: "Não foi possível conectar ao servidor LM Studio",
+    errorFileSave: "Erro ao salvar o arquivo!",
     
-    // Textos de animação de carregamento
+    // API key management
+    toggleApiKeyVisibility: "Mostrar/Ocultar chave da API",
+    
+    // Loading animation texts
     loadingGeneral: "Carregando...",
     loadingFileProcessing: "Processando arquivo...",
     loadingTablePopulation: "Preenchendo tabela...",
     loadingWorkFileProcessing: "Processando arquivo de trabalho...",
     loadingMmmFileProcessing: "Processando arquivo MMM...",
     loadingTranslation: "Traduzindo...",
-    loadingClickToClose: "Clique em qualquer lugar fora para fechar",
+    loadingClickToClose: "Clique em qualquer lugar para fechar",
     loadingBatchTranslation: "Tradução em lote em andamento...",
     
-    // Mensagens de erro do modo de tradução em lote
+    // Batch translation mode error messages
     errorNumberingRetry: "Erro de numeração, tentando novamente ({0}/{1})...",
     errorRateLimitExceeded: "Limite de taxa da API excedido, aguardando 10 segundos...",
     errorTranslationRetry: "Erro de tradução, tentando novamente ({0}/{1})...",
-    errorTranslationFailed: "Tradução falhou após {0} tentativas, continuando...",
+    errorTranslationFailed: "A tradução falhou após {0} tentativas, continuando...",
+    batchTranslationInProgress: "Tradução em andamento: {0} {1}-{2}...",
     
-    // Modo de tradução especial
-    batchModeLabel: "Modo de tradução especial de contexto amplo",
-    batchModeInfo: "Quando este recurso está ativado, o programa processa 30 linhas de texto de uma vez de maneira especial, permitindo uma tradução mais rápida com melhor compreensão e precisão"
+    // Special translation mode
+    batchModeLabel: "Modo especial de tradução com contexto ampliado",
+    batchModeInfo: "Quando este recurso está ativado, o programa processa 30 linhas de texto por vez, permitindo uma tradução mais rápida e com melhor compreensão e precisão."
 };
 
-// Export the language object
+// Export
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = pt;
+    module.exports = pt_BR;
 } else {
-    // For browser environment
-    window.pt = pt;
+    window.pt_BR = pt_BR;
 }
