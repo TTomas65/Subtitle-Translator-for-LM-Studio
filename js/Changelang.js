@@ -40,7 +40,8 @@ function changeUiLanguage(lang) {
         'es': 'Español',
         'fr': 'Français',
         'it': 'Italiano',
-        'pt': 'Português',
+        'pt_PT': 'Português (Portugal)',
+        'pt_BR': 'Português (Brasil)',
         'nl': 'Nederlands',
         'pl': 'Polski',
         'ru': 'Русский',
@@ -123,7 +124,7 @@ function updateUiTexts(translations) {
         // Főcím
         const mainTitle = document.querySelector('h1.display-5');
         if (mainTitle) {
-            mainTitle.innerHTML = `<i class="bi bi-translate me-2"></i>${translations.appTitle} <small class="fs-6 text-secondary">version 1.9</small>`;
+            mainTitle.innerHTML = `<i class="bi bi-translate me-2"></i>${translations.appTitle} <small class="fs-6 text-secondary">version 1.91</small>`;
         }
         
         // Kártya címek

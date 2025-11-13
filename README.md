@@ -16,6 +16,13 @@ This application is a simple yet powerful web tool for translating .srt subtitle
 
 ## Version History
 
+### Version 1.91 (2025-11-13)
+- **Portuguese Language Split**: Split Portuguese language into two variants for better localization:
+  - **Português (Portugal)** - `pt_PT` for European Portuguese
+  - **Português (Brasil)** - `pt_BR` for Brazilian Portuguese
+- Both variants are now available in the UI language selector and as source/target languages for translation
+- Each variant has its own dedicated language file with appropriate translations
+
 ### Version 1.9 (2025-11-12)
 - **LM Studio CORS Proxy Integration**: Added zero-dependency Node.js proxy server (`proxy.js`) to handle CORS issues when using LM Studio locally. The proxy runs on port 3001 by default and forwards requests to LM Studio on port 1234.
 - **Dynamic Base URL Configuration**: LM Studio base URL can now be configured via localStorage, allowing seamless switching between direct connection and proxy usage without code changes.
@@ -304,6 +311,13 @@ MAGYAR NYELVŰ LEÍRÁS:
 Ez az alkalmazás egy egyszerű, de hatékony webes eszköz .srt formátumú feliratfájlok fordítására. A program a helyi gépen futó LM Studio mesterséges intelligencia modellt vagy a ChatGPT API-t használja a fordításhoz.
 
 ## Verzió történet
+
+### 1.91-es verzió (2025-11-13)
+- **Portugál nyelv szétbontása**: A portugál nyelv két változatra lett bontva a jobb lokalizáció érdekében:
+  - **Português (Portugal)** - `pt_PT` az európai portugál nyelvhez
+  - **Português (Brasil)** - `pt_BR` a brazil portugál nyelvhez
+- Mindkét változat elérhető a felhasználói felület nyelvválasztójában és forrásnyelv/célnyelv opcióként a fordításhoz
+- Mindkét változat saját dedikált nyelvi fájllal rendelkezik a megfelelő fordításokkal
 
 ### 1.9-es verzió (2025-11-12)
 - **LM Studio CORS Proxy integráció**: Hozzáadva egy zero-dependency Node.js proxy szerver (`proxy.js`) a CORS hibák kezelésére LM Studio helyi használatakor. A proxy alapértelmezetten a 3001-es porton fut és továbbítja a kéréseket az LM Studio 1234-es portjára.

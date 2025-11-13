@@ -1,5 +1,5 @@
-// Português language file
-const pt = {
+// Português (Portugal) language file
+const pt_PT = {
     // Main title
     appTitle: "Tradutor de Legendas SRT",
     
@@ -97,8 +97,8 @@ const pt = {
 
 // Export the language object
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = pt;
+    module.exports = pt_PT;
 } else {
     // For browser environment
-    window.pt = pt;
+    window.pt_PT = pt_PT;
 }
