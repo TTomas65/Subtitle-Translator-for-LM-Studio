@@ -16,6 +16,13 @@ This application is a simple yet powerful web tool for translating .srt subtitle
 
 ## Version History
 
+### Version 1.92 (2025-11-14)
+- **Fixed LM Studio Translation Language Issue**: Resolved a critical bug where LM Studio would sometimes return translations in Hungarian instead of the target language
+  - Changed all prompt text from Hungarian to English to avoid confusing the language model
+  - Added `getLanguageNameEnglish()` function to provide English language names in prompts
+  - Updated context labels from "Előző mondat" / "Következő mondat" to "Previous subtitle" / "Next subtitle"
+  - This fix ensures consistent translations in the selected target language when using LM Studio
+
 ### Version 1.91 (2025-11-13)
 - **Portuguese Language Split**: Split Portuguese language into two variants for better localization:
   - **Português (Portugal)** - `pt_PT` for European Portuguese
@@ -311,6 +318,13 @@ MAGYAR NYELVŰ LEÍRÁS:
 Ez az alkalmazás egy egyszerű, de hatékony webes eszköz .srt formátumú feliratfájlok fordítására. A program a helyi gépen futó LM Studio mesterséges intelligencia modellt vagy a ChatGPT API-t használja a fordításhoz.
 
 ## Verzió történet
+
+### 1.92-es verzió (2025-11-14)
+- **LM Studio fordítási nyelv hiba javítása**: Megoldottam azt a kritikus hibát, amikor az LM Studio néha magyar nyelven adta vissza a fordítást a célnyelv helyett
+  - Minden prompt szöveg magyarról angolra lett változtatva, hogy ne zavarja össze a nyelvi modellt
+  - Hozzáadtam a `getLanguageNameEnglish()` függvényt, amely angol nyelvneveket ad vissza a promptokban
+  - Frissítettem a kontextus címkéket "Előző mondat" / "Következő mondat" helyett "Previous subtitle" / "Next subtitle"-ra
+  - Ez a javítás biztosítja, hogy az LM Studio használatakor a fordítások következetesen a kiválasztott célnyelven jelenjenek meg
 
 ### 1.91-es verzió (2025-11-13)
 - **Portugál nyelv szétbontása**: A portugál nyelv két változatra lett bontva a jobb lokalizáció érdekében:

@@ -1031,6 +1031,53 @@ function getLMStudioBaseUrl() {
     return 'http://localhost:1234';
 }
 
+// English language names for LM Studio prompts (to avoid confusion with Hungarian)
+function getLanguageNameEnglish(languageCode) {
+    const languages = {
+        'en': 'English',
+        'hu': 'Hungarian',
+        'de': 'German',
+        'fr': 'French',
+        'es': 'Spanish',
+        'it': 'Italian',
+        'pt_PT': 'Portuguese (Portugal)',
+        'pt_BR': 'Portuguese (Brazil)',
+        'nl': 'Dutch',
+        'pl': 'Polish',
+        'ru': 'Russian',
+        'ja': 'Japanese',
+        'zh': 'Chinese',
+        'zh_tw': 'Chinese (Taiwan)',
+        'zh_hk': 'Chinese (Hong Kong)',
+        'ko': 'Korean',
+        'ar': 'Arabic',
+        'hi': 'Hindi',
+        'tr': 'Turkish',
+        'sv': 'Swedish',
+        'da': 'Danish',
+        'fi': 'Finnish',
+        'no': 'Norwegian',
+        'cs': 'Czech',
+        'sk': 'Slovak',
+        'ro': 'Romanian',
+        'bg': 'Bulgarian',
+        'hr': 'Croatian',
+        'sr': 'Serbian',
+        'uk': 'Ukrainian',
+        'el': 'Greek',
+        'he': 'Hebrew',
+        'vi': 'Vietnamese',
+        'th': 'Thai',
+        'id': 'Indonesian',
+        'ms': 'Malay',
+        'fa': 'Persian',
+        'ur': 'Urdu',
+        'bn': 'Bengali'
+    };
+    
+    return languages[languageCode] || languageCode;
+}
+
 // Szöveg fordítása kontextussal az LM Studio API-val
 async function translateTextWithContext(subtitles, currentIndex, sourceLanguage, targetLanguage, retryCount = 0, temperature, { getLanguageName }) {
     try {
@@ -1043,14 +1090,14 @@ async function translateTextWithContext(subtitles, currentIndex, sourceLanguage,
         // Előző mondatok hozzáadása a kontextushoz (max 4)
         for (let i = 1; i <= 4; i++) {
             if (currentIndex - i >= 0) {
-                context += `Előző mondat ${i}: "${subtitles[currentIndex - i].text}"\n`;
+                context += `Previous subtitle ${i}: "${subtitles[currentIndex - i].text}"\n`;
             }
         }
         
         // Következő mondatok hozzáadása a kontextushoz (max 4)
         for (let i = 1; i <= 4; i++) {
             if (currentIndex + i < subtitles.length) {
-                context += `Következő mondat ${i}: "${subtitles[currentIndex + i].text}"\n`;
+                context += `Next subtitle ${i}: "${subtitles[currentIndex + i].text}"\n`;
             }
         }
         
@@ -1060,13 +1107,13 @@ async function translateTextWithContext(subtitles, currentIndex, sourceLanguage,
         const chatUrl = `${LM_BASE}/v1/chat/completions`; // preferred
         
         // Fordítási prompt összeállítása kontextussal
-        let prompt = `Te egy professzionális fordító vagy, aki ${getLanguageName(sourceLanguage)} nyelvről ${getLanguageName(targetLanguage)} nyelvre fordít egy filmfeliratot. A fordításnak természetesnek és folyékonynak kell lennie, miközben megőrzi az eredeti jelentést és stílust. Ne használj formázást, kódjelölést vagy idézőjeleket a fordításban.\n\n`;
+        let prompt = `You are a professional translator translating movie subtitles from ${getLanguageNameEnglish(sourceLanguage)} to ${getLanguageNameEnglish(targetLanguage)}. The translation must be natural and fluent while preserving the original meaning and style. Do not use formatting, code fences, or quotes in the translation.\n\n`;
         
         if (context) {
-            prompt += `Kontextus a jobb fordításhoz:\n${context}\n`;
+            prompt += `Context for better translation:\n${context}\n`;
         }
         
-        prompt += `Fordítandó mondat: "${currentSubtitle}"\n\nFordítás:`;
+        prompt += `Subtitle to translate: "${currentSubtitle}"\n\nTranslation:`;
         
         // Először próbálkozzunk a Chat Completions végponttal (OpenAI kompatibilis)
         try {
@@ -1096,12 +1143,12 @@ async function translateTextWithContext(subtitles, currentIndex, sourceLanguage,
                 console.warn('LM Studio /v1/models request failed; proceeding without explicit model.');
             }
 
-            const systemMsg = `You are a professional translator from ${getLanguageName(sourceLanguage)} to ${getLanguageName(targetLanguage)}. Produce a natural, fluent translation that preserves the original meaning and style. Do not use formatting, code fences, or quotes.`;
+            const systemMsg = `You are a professional translator from ${getLanguageNameEnglish(sourceLanguage)} to ${getLanguageNameEnglish(targetLanguage)}. Produce a natural, fluent translation that preserves the original meaning and style. Do not use formatting, code fences, or quotes.`;
             let userMsg = '';
             if (context) {
-                userMsg += `Kontextus a jobb fordításhoz:\n${context}\n\n`;
+                userMsg += `Context for better translation:\n${context}\n\n`;
             }
-            userMsg += `Fordítandó mondat: "${currentSubtitle}"`;
+            userMsg += `Subtitle to translate: "${currentSubtitle}"`;
 
             const chatBody = {
                 messages: [
