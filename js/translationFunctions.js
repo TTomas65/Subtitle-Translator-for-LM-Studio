@@ -1015,6 +1015,20 @@ function getLanguageNameLocal(languageCode) {
     return languages[languageCode] || languageCode;
 }
 
+// Cached LM Studio model id to avoid fetching /v1/models on every request
+let lmStudioDetectedModelId = null;
+
+// Resolve LM Studio base URL from localStorage if provided, otherwise default to localhost:1234
+function getLMStudioBaseUrl() {
+    try {
+        const stored = localStorage.getItem('LM_STUDIO_BASE_URL');
+        if (stored && typeof stored === 'string') return stored;
+    } catch (_) {
+        // localStorage may be unavailable in some contexts
+    }
+    return 'http://localhost:1234';
+}
+
 // Szöveg fordítása kontextussal az LM Studio API-val
 async function translateTextWithContext(subtitles, currentIndex, sourceLanguage, targetLanguage, retryCount = 0, temperature, { getLanguageName }) {
     try {
@@ -1038,8 +1052,10 @@ async function translateTextWithContext(subtitles, currentIndex, sourceLanguage,
             }
         }
         
-        // LM Studio API végpont
-        const apiUrl = 'http://localhost:1234/v1/completions';
+        // LM Studio API endpoints (dynamic base)
+        const LM_BASE = getLMStudioBaseUrl();
+        const apiUrl = `${LM_BASE}/v1/completions`; // fallback
+        const chatUrl = `${LM_BASE}/v1/chat/completions`; // preferred
         
         // Fordítási prompt összeállítása kontextussal
         let prompt = `Te egy professzionális fordító vagy, aki ${getLanguageName(sourceLanguage)} nyelvről ${getLanguageName(targetLanguage)} nyelvre fordít egy filmfeliratot. A fordításnak természetesnek és folyékonynak kell lennie, miközben megőrzi az eredeti jelentést és stílust. Ne használj formázást, kódjelölést vagy idézőjeleket a fordításban.\n\n`;
@@ -1050,11 +1066,107 @@ async function translateTextWithContext(subtitles, currentIndex, sourceLanguage,
         
         prompt += `Fordítandó mondat: "${currentSubtitle}"\n\nFordítás:`;
         
-        // Fordítási kérés összeállítása
+        // Először próbálkozzunk a Chat Completions végponttal (OpenAI kompatibilis)
+        try {
+            const commonHeaders = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer lm-studio'
+            };
+
+            // Optional: detect model id once and cache it
+            let detectedModelId = lmStudioDetectedModelId;
+            try {
+                if (!detectedModelId) {
+                    const modelsRes = await fetch(`${LM_BASE}/v1/models`, { headers: commonHeaders });
+                    const modelsText = await modelsRes.text();
+                    try {
+                        const modelsJson = JSON.parse(modelsText);
+                        if (modelsJson && Array.isArray(modelsJson.data) && modelsJson.data.length > 0) {
+                            detectedModelId = modelsJson.data[0].id;
+                            lmStudioDetectedModelId = detectedModelId; // cache it
+                        }
+                    } catch (_) {
+                        // ignore parse error
+                    }
+                }
+            } catch (_) {
+                console.warn('LM Studio /v1/models request failed; proceeding without explicit model.');
+            }
+
+            const systemMsg = `You are a professional translator from ${getLanguageName(sourceLanguage)} to ${getLanguageName(targetLanguage)}. Produce a natural, fluent translation that preserves the original meaning and style. Do not use formatting, code fences, or quotes.`;
+            let userMsg = '';
+            if (context) {
+                userMsg += `Kontextus a jobb fordításhoz:\n${context}\n\n`;
+            }
+            userMsg += `Fordítandó mondat: "${currentSubtitle}"`;
+
+            const chatBody = {
+                messages: [
+                    { role: 'system', content: systemMsg },
+                    { role: 'user', content: userMsg }
+                ],
+                temperature: temperature,
+                max_tokens: 500,
+                stream: false
+            };
+            if (detectedModelId) chatBody.model = detectedModelId;
+
+            const chatRes = await fetch(chatUrl, {
+                method: 'POST',
+                headers: commonHeaders,
+                body: JSON.stringify(chatBody)
+            });
+
+            if (chatRes.status === 429 && retryCount < 3) {
+                console.log(`429 from chat/completions; retry ${retryCount + 1}/3 after 1000ms...`);
+                await new Promise(r => setTimeout(r, 1000));
+                return translateTextWithContext(subtitles, currentIndex, sourceLanguage, targetLanguage, retryCount + 1, temperature, { getLanguageName });
+            }
+
+            if (chatRes.ok) {
+                const chatText = await chatRes.text();
+                let chatData;
+                try {
+                    chatData = JSON.parse(chatText);
+                } catch (e) {
+                    throw new Error(`Invalid JSON from chat/completions: ${chatText}`);
+                }
+
+                if (chatData && chatData.choices && Array.isArray(chatData.choices) && chatData.choices.length > 0 && chatData.choices[0].message && chatData.choices[0].message.content) {
+                    let translatedText = chatData.choices[0].message.content.trim();
+
+                    // Special handling for openai/gpt-oss-20b model output format
+                    if (translatedText.includes('final<|message|>')) {
+                        const finalMessageIndex = translatedText.indexOf('final<|message|>');
+                        if (finalMessageIndex !== -1) {
+                            const afterFinalMessage = translatedText.substring(finalMessageIndex + 'final<|message|>'.length).trim();
+                            if (afterFinalMessage) {
+                                translatedText = afterFinalMessage;
+                                console.log('Special openai/gpt-oss-20b format detected (chat), extracted translation:', translatedText);
+                            }
+                        }
+                    }
+
+                    console.log('Translation result (chat):', translatedText);
+                    return translatedText;
+                }
+
+                console.warn('chat/completions returned no message.content; falling back to /v1/completions.');
+            } else {
+                console.warn('chat/completions not OK:', chatRes.status, await chatRes.text());
+            }
+        } catch (e) {
+            console.warn('chat/completions attempt failed; falling back to /v1/completions:', e);
+        }
+
+        // Fallback: /v1/completions végpont hívása
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer lm-studio'
             },
             body: JSON.stringify({
                 prompt: prompt,
@@ -1063,16 +1175,7 @@ async function translateTextWithContext(subtitles, currentIndex, sourceLanguage,
                 stream: false
             })
         });
-        
-        // Ha 429-es hiba (túl sok kérés), akkor újrapróbálkozunk
-        if (response.status === 429 && retryCount < 3) {
-            console.log(`429 hiba, újrapróbálkozás ${retryCount + 1}/3 (várakozás: 1000ms)...`);
-            // Várakozás 1 másodpercet
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            // Újrapróbálkozás
-            return translateTextWithContext(subtitles, currentIndex, sourceLanguage, targetLanguage, retryCount + 1, temperature, { getLanguageName });
-        }
-        
+
         // Válasz szöveg ellenőrzése
         const responseText = await response.text();
         console.log('API válasz szöveg:', responseText);

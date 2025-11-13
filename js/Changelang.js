@@ -123,7 +123,7 @@ function updateUiTexts(translations) {
         // Főcím
         const mainTitle = document.querySelector('h1.display-5');
         if (mainTitle) {
-            mainTitle.innerHTML = `<i class="bi bi-translate me-2"></i>${translations.appTitle} <small class="fs-6 text-secondary">version 1.81</small>`;
+            mainTitle.innerHTML = `<i class="bi bi-translate me-2"></i>${translations.appTitle} <small class="fs-6 text-secondary">version 1.9</small>`;
         }
         
         // Kártya címek

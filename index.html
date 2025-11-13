@@ -14,7 +14,7 @@
     <div class="container py-4">
         <header class="pb-3 mb-4 border-bottom border-secondary">
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="display-5 fw-bold text-primary"><i class="bi bi-translate me-2"></i>SRT Felirat Fordító <small class="fs-6 text-secondary">version 1.81</small></h1>
+                <h1 class="display-5 fw-bold text-primary"><i class="bi bi-translate me-2"></i>SRT Felirat Fordító <small class="fs-6 text-secondary">version 1.9</small></h1>
                 
                 <!-- Nyelvválasztó gomb -->
                 <div class="dropdown">
@@ -281,6 +281,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- Translations -->
     <script src="js/translations.js"></script>
+    <!-- Set LM_STUDIO_BASE_URL from URL query before loading translationFunctions.js -->
+    <script>
+        // English comments only: configure LM Studio base from URL
+        (function() {
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var direct = params.get('lm_base');
+                if (direct) {
+                    localStorage.setItem('LM_STUDIO_BASE_URL', direct);
+                } else if (params.get('useProxy') === '1') {
+                    // Prefer IPv4 loopback to avoid potential IPv6 (::1) issues
+                    localStorage.setItem('LM_STUDIO_BASE_URL', 'http://127.0.0.1:3001');
+                }
+            } catch (e) {
+                // ignore
+            }
+        })();
+    </script>
     <!-- Először betöltjük a translationFunctions.js fájlt -->
     <script src="js/translationFunctions.js"></script>
     <!-- Aztán a Changelang.js fájlt -->

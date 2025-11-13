@@ -16,6 +16,13 @@ This application is a simple yet powerful web tool for translating .srt subtitle
 
 ## Version History
 
+### Version 1.9 (2025-11-12)
+- **LM Studio CORS Proxy Integration**: Added zero-dependency Node.js proxy server (`proxy.js`) to handle CORS issues when using LM Studio locally. The proxy runs on port 3001 by default and forwards requests to LM Studio on port 1234.
+- **Dynamic Base URL Configuration**: LM Studio base URL can now be configured via localStorage, allowing seamless switching between direct connection and proxy usage without code changes.
+- **Automated Startup Script**: Created `StartApp.bat` for Windows users to automatically start the proxy server and launch the application with proper configuration in one click.
+- **URL Parameter Support**: Added support for URL query parameters (`?useProxy=1` or `?lm_base=http://...`) to configure LM Studio connection on application startup.
+- **IPv4 Optimization**: All network connections now use IPv4 (127.0.0.1) by default to avoid IPv6/IPv4 compatibility issues.
+
 ### Version 1.81 (2025-08-07)
 - **Enhanced LM Studio Model Support**: Added support for the new "openai/gpt-oss-20b" model, which uses a special response format. The program now automatically detects and extracts the translation from responses containing the "final<|message|>" pattern, ensuring proper functionality with this model while maintaining compatibility with all other models.
 
@@ -297,6 +304,13 @@ MAGYAR NYELVŰ LEÍRÁS:
 Ez az alkalmazás egy egyszerű, de hatékony webes eszköz .srt formátumú feliratfájlok fordítására. A program a helyi gépen futó LM Studio mesterséges intelligencia modellt vagy a ChatGPT API-t használja a fordításhoz.
 
 ## Verzió történet
+
+### 1.9-es verzió (2025-11-12)
+- **LM Studio CORS Proxy integráció**: Hozzáadva egy zero-dependency Node.js proxy szerver (`proxy.js`) a CORS hibák kezelésére LM Studio helyi használatakor. A proxy alapértelmezetten a 3001-es porton fut és továbbítja a kéréseket az LM Studio 1234-es portjára.
+- **Dinamikus alap URL konfiguráció**: Az LM Studio alap URL-je mostantól localStorage-on keresztül konfigurálható, lehetővé téve a közvetlen kapcsolat és a proxy használat közötti zökkenőmentes váltást kódmódosítás nélkül.
+- **Automatizált indító szkript**: Létrehoztam a `StartApp.bat` fájlt Windows felhasználók számára, amely automatikusan elindítja a proxy szervert és megnyitja az alkalmazást a megfelelő konfigurációval egyetlen kattintással.
+- **URL paraméter támogatás**: Hozzáadva az URL query paraméterek támogatása (`?useProxy=1` vagy `?lm_base=http://...`) az LM Studio kapcsolat konfigurálásához az alkalmazás indításakor.
+- **IPv4 optimalizálás**: Minden hálózati kapcsolat mostantól alapértelmezetten IPv4-et (127.0.0.1) használ az IPv6/IPv4 kompatibilitási problémák elkerülése érdekében.
 
 ### 1.81-es verzió (2025-08-07)
 - **Továbbfejlesztett LM Studio modell támogatás**: Hozzáadva az új "openai/gpt-oss-20b" modell támogatása, amely speciális válaszformátumot használ. A program most automatikusan felismeri és kinyeri a fordítást a "final<|message|>" mintát tartalmazó válaszokból, biztosítva a megfelelő működést ezzel a modellel, miközben fenntartja a kompatibilitást az összes többi modellel.
