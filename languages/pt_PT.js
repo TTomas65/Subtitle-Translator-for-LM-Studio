@@ -11,7 +11,7 @@ const pt_PT = {
     fileInfo: "linhas",
     
     // Translation temperature
-    temperatureTitle: "Temperatura da Tradução",
+    temperatureTitle: "Nível da Tradução",
     temperatureAccurate: "Precisa",
     temperatureBalanced: "Equilibrada",
     temperatureCreative: "Criativa",
