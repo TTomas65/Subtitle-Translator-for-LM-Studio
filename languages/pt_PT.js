@@ -11,10 +11,10 @@ const pt_PT = {
     fileInfo: "linhas",
     
     // Translation temperature
-    temperatureTitle: "Nível da Tradução",
-    temperatureAccurate: "Precisa",
-    temperatureBalanced: "Equilibrada",
-    temperatureCreative: "Criativa",
+    temperatureTitle: "Nível de Tradução",
+    temperatureAccurate: "Preciso",
+    temperatureBalanced: "Equilibrado",
+    temperatureCreative: "Criativo",
     
     // Translation mode and API key
     languageTitle: "Tradução",
@@ -25,14 +25,14 @@ const pt_PT = {
     targetLanguage: "Idioma de Destino",
     
     // OpenRouter model selector
-    openrouterModelLabel: "Seleção de modelo OpenRouter:",
+    openrouterModelLabel: "Seleção do modelo OpenRouter:",
     selectModelPlaceholder: "Selecionar um modelo...",
     
     // Buttons
     startTranslation: "Iniciar Tradução",
     continueTranslation: "Continuar Tradução",
     stopTranslation: "Parar Tradução",
-    resetTranslation: "Reiniciar",
+    resetTranslation: "Reiniciar Tradução",
     saveTranslation: "Guardar Tradução",
     saveWorkFile: "Guardar Ficheiro de Trabalho",
     saveSourceBlock: "Guardar Bloco de Origem",
@@ -75,19 +75,19 @@ const pt_PT = {
     errorNoSubtitles: "Nenhuma legenda carregada",
     errorNoSubtitleToSave: "Nenhuma legenda carregada para guardar!",
     errorNoTranslation: "Nenhuma tradução disponível",
-    errorNoSourceLanguage: "Seleciona a língua de origem",
-    errorNoTargetLanguage: "Seleciona a língua de destino",
+    errorNoSourceLanguage: "Seleciona o idioma de origem",
+    errorNoTargetLanguage: "Seleciona o idioma de destino",
     errorApiKey: "A chave da API é obrigatória para este modo de tradução",
-    errorApiNotAvailable: "A API do LM Studio não está disponível. Verifica se o LM Studio está a correr em segundo plano.",
+    errorApiNotAvailable: "A API do LM Studio não está disponível. Verifica se o LM Studio está em execução.",
     errorRetranslation: "Ocorreu um erro durante a retradução!",
     errorLoadWorkFile: "Ocorreu um erro ao carregar o ficheiro de trabalho. Verifica o formato do ficheiro!",
     errorServerConnection: "Não foi possível ligar ao servidor do LM Studio",
     errorFileSave: "Erro ao guardar o ficheiro!",
     
     // API key management
-    toggleApiKeyVisibility: "Mostrar/Ocultar chave da API",
+    toggleApiKeyVisibility: "Mostrar/ocultar chave da API",
     
-    // Textos de animação de carregamento
+    // Loading animation texts
     loadingGeneral: "A carregar...",
     loadingFileProcessing: "A processar o ficheiro...",
     loadingTablePopulation: "A preencher a tabela...",
@@ -97,14 +97,14 @@ const pt_PT = {
     loadingClickToClose: "Clica em qualquer parte para fechar",
     loadingBatchTranslation: "Tradução em lote em curso...",
     
-    // Mensagens de erro do modo de tradução em lote
+    // Batch translation mode error messages
     errorNumberingRetry: "Erro de numeração, a tentar novamente ({0}/{1})...",
     errorRateLimitExceeded: "Limite de pedidos da API excedido, a aguardar 10 segundos...",
     errorTranslationRetry: "Erro de tradução, a tentar novamente ({0}/{1})...",
     errorTranslationFailed: "A tradução falhou após {0} tentativas, a avançar...",
     batchTranslationInProgress: "Tradução em curso: {0} {1}-{2}...",
     
-    // Modo de tradução especial
+    // Special translation mode
     batchModeLabel: "Modo especial de tradução com contexto alargado",
     batchModeInfo: "Quando esta opção está ativa, o programa processa 30 linhas de texto de cada vez, permitindo uma tradução mais rápida e com melhor compreensão e precisão."
 };
